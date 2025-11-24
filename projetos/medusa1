@@ -1,0 +1,94 @@
+## 📝 Documentação GitHub: Estudo de Caso - Teste de Invasão em Serviço FTP utilizando força bruta (medusa)
+
+Esta documentação detalha um estudo de caso prático de teste de invasão (Penetration Test) focado na identificação e exploração de vulnerabilidades em um serviço FTP, culminando em um ataque de força bruta bem-sucedido. O objetivo primário é educacional, visando a compreensão das técnicas de ataque para fortalecer as medidas de defesa.
+
+-----
+
+### 📚 Ambiente do Estudo de Caso
+
+| Componente | Detalhe | Função |
+| :--- | :--- | :--- |
+| **Sistema Operacional Atacante** | Kali Linux | [cite\_start]Hospeda as ferramentas de varredura e força bruta[cite: 2]. |
+| **Máquina Alvo** | Metasploitable 2 | [cite\_start]Máquina virtual notoriamente vulnerável, utilizada como alvo[cite: 2]. |
+| **Serviço Alvo** | FTP (vsftpd 2.3.4) | [cite\_start]O serviço que foi varrido e alvo do ataque de força bruta[cite: 8]. |
+
+-----
+
+### 1\. 🌐 Reconhecimento e Varredura (Nmap)
+
+[cite\_start]O reconhecimento é o estágio inicial para identificar *hosts* ativos e os serviços que estão em execução[cite: 4]. [cite\_start]O **Nmap** (Network Mapper) é a ferramenta padrão utilizada para este propósito[cite: 5].
+
+  * [cite\_start]**Objetivo:** Verificar se a porta **21 (FTP)** está aberta e coletar informações de versão do serviço[cite: 6].
+  * **Comando Utilizado:**
+    ```bash
+    nmap -sV -p 21 192.168.56.101
+    ```
+  * [cite\_start]**Resultado da Varredura:** O *scan* confirmou que a porta 21 está aberta, rodando o serviço `vsftpd 2.3.4`[cite: 8].
+
+-----
+
+### 2\. 📝 Enumeração e Coleta de Informações
+
+[cite\_start]A enumeração aprofunda a coleta de informações sobre o serviço[cite: 14]. [cite\_start]Neste caso, buscamos a versão do servidor FTP para identificar vulnerabilidades conhecidas (CVEs) e verificar se o acesso anônimo é permitido[cite: 15, 16].
+
+  * [cite\_start]**Informação Encontrada:** O servidor está rodando **vsftpd 2.3.4**[cite: 16].
+  * **Implicação:** A versão `vsftpd 2.3.4` é conhecida por possuir *backdoors* e vulnerabilidades críticas, tornando-se um alvo de alto valor.
+
+-----
+
+### 3\. 💣 Quebra de Senha de Força Bruta (Medusa)
+
+[cite\_start]A técnica de força bruta é empregada para tentar um grande número de combinações de credenciais até encontrar uma válida[cite: 22]. [cite\_start]O **Medusa** é uma ferramenta popular para testes de força bruta em diversos protocolos[cite: 23].
+
+  * **Preparação das Wordlists:**
+    [cite\_start]Foram criados dois arquivos (`user.txt` e `pass.txt`) contendo listas de usuários e senhas comuns para o teste[cite: 24, 25].
+
+      * [cite\_start]**Usuários (`user.txt`):** `user`, `msfadmin`, `nadmin`, `nroot` [cite: 24]
+      * [cite\_start]**Senhas (`pass.txt`):** `123456`, `npassword`, `nqwerty`, `nmsfadmin` [cite: 24]
+
+  * **Execução do Ataque:**
+    [cite\_start]O comando Medusa foi executado especificando o *host* (`-h`), a lista de usuários (`-U`), a lista de senhas (`-P`), o protocolo (`-M ftp`), e o número de *threads* (`-t 6`)[cite: 24].
+
+    ```bash
+    medusa -h 192.168.56.101 -U user.txt -P pass.txt -M ftp -t 6
+    ```
+
+  * **Resultado do Ataque:**
+    O ataque foi bem-sucedido, e as credenciais válidas foram encontradas:
+
+    > [cite\_start]**User: msfadmin Password: msfadmin [SUCCESS]** [cite: 24]
+
+  * **Validação da Conexão:**
+    [cite\_start]A conexão foi validada usando o cliente FTP, provando o acesso não autorizado ao sistema[cite: 33].
+
+    ```bash
+    $ ftp 192.168.56.101
+    Connected to 192.168.56.101.
+    220 (vsFTPd 2.3.4)
+    Name (192.168.56.101:kaht): msfadmin
+    Password:
+    230 Login successful.
+    Remote system type is UNIX.
+    Using binary mode to transfer files.
+    ftp>
+    ```
+
+-----
+
+### 🛡️ Medidas de Mitigação e Defesa
+
+[cite\_start]Abaixo estão as estratégias essenciais para proteger um serviço FTP contra os ataques demonstrados[cite: 1].
+
+| Risco de Segurança | Estratégia de Defesa Recomendada |
+| :--- | :--- |
+| **Descoberta de Porta (Varredura)** | [cite\_start]Implementar **Firewall** com lista de acesso restrito (ACL)[cite: 10, 35]. [cite\_start]Usar um **IDS/IPS** para monitorar e alertar sobre varreduras excessivas[cite: 12]. |
+| **Enumeração de Versão** | [cite\_start]**Atualizar o Software FTP** (ProFTPD, vsftpd, etc.) regularmente para corrigir vulnerabilidades conhecidas[cite: 20]. [cite\_start]Desativar o acesso anônimo, se desnecessário[cite: 18]. |
+| **Força Bruta de Credenciais** | [cite\_start]Configurar **Políticas de Senha Fortes** e trocas regulares[cite: 28]. [cite\_start]Implementar **Bloqueio de Contas** (*Rate Limiting/Lockout*) após um pequeno número de tentativas falhas[cite: 29]. [cite\_start]Utilizar **SFTP** (FTP sobre SSH) ou **FTPS** (FTP sobre SSL/TLS) para criptografar o canal de comunicação[cite: 32]. |
+
+-----
+
+### 🚀 Próximos Passos (Recomendação)
+
+Para testar a segurança de forma mais abrangente, o próximo passo seria explorar a vulnerabilidade conhecida do `vsftpd 2.3.4` (possível *backdoor*) e verificar o impacto após a aplicação das medidas de mitigação.
+
+**Você gostaria de focar na documentação sobre como implementar uma das defesas mencionadas, como o bloqueio de IP no Firewall?**
