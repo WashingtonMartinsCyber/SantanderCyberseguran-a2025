@@ -26,7 +26,7 @@ Durante o bootcamp, utilizei e pratiquei com as seguintes ferramentas:
 | `/linux-fundamentos` | Scripts em Bash e gerenciamento de usuários/permissões. |
 | `/python-security` | Ferramentas de automação e pentest escritas em Python. |
 | `/redes-labs` | Análises de pcap (Wireshark) e configurações de rede. |
-| [projetos](projetos/)
+| [projetos](projetos/) | Projetos |
 | `/projetos-finais` | Projetos de conclusão de curso e pentests simulados. |
 
 ## 🚀 Projetos Destaque
