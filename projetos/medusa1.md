@@ -1,4 +1,3 @@
-````markdown
 # 🛡️ Documentação Educacional: Compreendendo e Mitigando Ataques FTP de Força Bruta
 
 Esta documentação tem o objetivo de educar sobre as técnicas de varredura e força bruta usadas contra serviços FTP, utilizando **Kali Linux** como sistema operacional atacante e **Metasploitable 2** como máquina alvo vulnerável.
