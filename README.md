@@ -26,7 +26,7 @@ Durante o bootcamp, utilizei e pratiquei com as seguintes ferramentas:
 | `/linux-fundamentos` | Scripts em Bash e gerenciamento de usuários/permissões. |
 | `/python-security` | Ferramentas de automação e pentest escritas em Python. |
 | `/redes-labs` | Análises de pcap (Wireshark) e configurações de rede. |
-| `/projetos` | Projetos |
+| [projetos](projetos/)
 | `/projetos-finais` | Projetos de conclusão de curso e pentests simulados. |
 
 ## 🚀 Projetos Destaque
@@ -47,4 +47,4 @@ Sinta-se à vontade para explorar o código, abrir issues para dúvidas ou suges
 * **LinkedIn:** https://www.linkedin.com/in/washington-martinsCyberSec/
 
 ---
-*Desenvolvido por [Seu Nome] durante a jornada de aprendizado em Cibersegurança.*
+*Desenvolvido por Washington durante a jornada de aprendizado em Cibersegurança.*
